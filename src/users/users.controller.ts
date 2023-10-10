@@ -1,21 +1,22 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
-import {CreateUserDto} from "./dto/create-user.dto";
-import {UsersService} from "./users.service";
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UsersService } from './users.service';
+import { Roles } from '../auth/roles-auth.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('users')
 export class UsersController {
+  constructor(private usersService: UsersService) {}
 
-    constructor(private usersService: UsersService) {
-    }
+  @Post()
+  create(@Body() userDto: CreateUserDto) {
+    return this.usersService.createUser(userDto);
+  }
 
-    @Post()
-    create(@Body() userDto: CreateUserDto) {
-        return this.usersService.createUser(userDto)
-    }
-
-    @Get()
-    getAll() {
-        return this.usersService.getAllUsers()
-    }
-
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  @Get()
+  getAll() {
+    return this.usersService.getAllUsers();
+  }
 }
