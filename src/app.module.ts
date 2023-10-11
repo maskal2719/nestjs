@@ -23,6 +23,13 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
+      ssl: true,
+      dialectOptions: {
+        ssl: {
+          require: true, // Требовать SSL
+          rejectUnauthorized: false, // Отключить проверку подлинности сертификата
+        },
+      },
       models: [User, Role, UserRoles],
       autoLoadModels: true,
     }),
