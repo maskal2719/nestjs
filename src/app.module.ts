@@ -8,6 +8,8 @@ import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-roles.model';
 import { AuthModule } from './auth/auth.module';
+import { MenuModule } from './menu/menu.module';
+import { Menu } from './menu/menu.model';
 
 @Module({
   controllers: [],
@@ -23,19 +25,20 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      ssl: true,
-      dialectOptions: {
-        ssl: {
-          require: true, // Требовать SSL
-          rejectUnauthorized: false, // Отключить проверку подлинности сертификата
-        },
-      },
-      models: [User, Role, UserRoles],
+      // ssl: true,
+      // dialectOptions: {
+      //   ssl: {
+      //     require: true, // Требовать SSL
+      //     rejectUnauthorized: false, // Отключить проверку подлинности сертификата
+      //   },
+      // },
+      models: [User, Role, UserRoles, Menu],
       autoLoadModels: true,
     }),
     UsersModule,
     RolesModule,
     AuthModule,
+    MenuModule,
   ],
 })
 export class AppModule {}
