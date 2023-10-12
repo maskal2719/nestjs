@@ -11,8 +11,10 @@ import { MenuService } from './menu.service';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { Roles } from '../auth/roles-auth.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('menu')
+@UseGuards(JwtAuthGuard)
 export class MenuController {
   constructor(private menuService: MenuService) {}
 
