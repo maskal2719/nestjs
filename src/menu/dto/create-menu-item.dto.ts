@@ -5,5 +5,7 @@ export class CreateMenuItemDto {
   readonly name: string;
   @IsNumber()
   readonly price: number;
+  readonly weight: number;
+  readonly description: string;
   readonly isEmpty?: boolean;
 }

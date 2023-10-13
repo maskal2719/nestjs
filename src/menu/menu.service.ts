@@ -6,6 +6,7 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { Menu } from './menu.model';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
+import { Category } from '../categories/categories.model';
 
 @Injectable()
 export class MenuService {
@@ -40,6 +41,11 @@ export class MenuService {
       where: {
         isEmpty: false,
       },
+      include: [
+        {
+          model: Category,
+        },
+      ],
     });
     return menuItems;
   }

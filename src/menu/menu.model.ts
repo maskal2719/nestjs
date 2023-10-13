@@ -1,9 +1,18 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsTo,
+  Column,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
+import { Category } from '../categories/categories.model';
 
 interface MenuModelAttrs {
   name: string;
   price: number;
+  weight: number;
+  description: string;
   isEmpty: boolean;
 }
 
@@ -21,6 +30,19 @@ export class Menu extends Model<Menu, MenuModelAttrs> {
   @Column({ type: DataTypes.FLOAT, allowNull: false })
   price: number;
 
+  @Column({ type: DataTypes.FLOAT, allowNull: true })
+  weight: number;
+
+  @Column({ type: DataTypes.STRING, allowNull: true })
+  description: string;
+
   @Column({ type: DataTypes.BOOLEAN, allowNull: true })
   isEmpty?: boolean;
+
+  @ForeignKey(() => Category)
+  @Column
+  categoryId: number;
+
+  @BelongsTo(() => Category)
+  category: Category;
 }

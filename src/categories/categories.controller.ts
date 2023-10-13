@@ -33,6 +33,13 @@ export class CategoriesController {
     return this.categoriesService.getAllCategory();
   }
 
+  @Get(':id')
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  getOne(@Param('id') id: number) {
+    return this.categoriesService.getOneCategory(id);
+  }
+
   @Put(':id')
   @Roles('admin')
   @UseGuards(RolesGuard)
