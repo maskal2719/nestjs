@@ -10,6 +10,8 @@ import { UserRoles } from './roles/user-roles.model';
 import { AuthModule } from './auth/auth.module';
 import { MenuModule } from './menu/menu.module';
 import { Menu } from './menu/menu.model';
+import { CategoriesModule } from './categories/categories.module';
+import { Category } from './categories/categories.model';
 
 @Module({
   controllers: [],
@@ -32,13 +34,14 @@ import { Menu } from './menu/menu.model';
       //     rejectUnauthorized: false, // Отключить проверку подлинности сертификата
       //   },
       // },
-      models: [User, Role, UserRoles, Menu],
+      models: [User, Role, UserRoles, Menu, Category],
       autoLoadModels: true,
     }),
     UsersModule,
     RolesModule,
     AuthModule,
     MenuModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {}
