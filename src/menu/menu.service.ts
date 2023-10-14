@@ -50,6 +50,19 @@ export class MenuService {
     return menuItems;
   }
 
+  async deleteMenuItem(id: number) {
+    const menuItem = await this.menuRepository.findOne({
+      where: { id },
+    });
+
+    if (!menuItem) {
+      throw new NotFoundException('Item not found');
+    }
+
+    await menuItem.destroy();
+    return menuItem;
+  }
+
   async getMenuItemByName(name: string) {
     const menuItem = await this.menuRepository.findOne({ where: { name } });
     return menuItem;

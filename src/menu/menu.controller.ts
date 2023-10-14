@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -38,5 +39,12 @@ export class MenuController {
   @Get()
   getAll() {
     return this.menuService.getAllMenuItems();
+  }
+
+  @Delete(':id')
+  @Roles('admin')
+  @UseGuards(RolesGuard)
+  remove(@Param('id') id: number) {
+    return this.menuService.deleteMenuItem(id);
   }
 }
