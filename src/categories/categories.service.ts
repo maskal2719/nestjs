@@ -6,11 +6,13 @@ import {
 import { InjectModel } from '@nestjs/sequelize';
 import { Category } from './categories.model';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { MenuService } from '../menu/menu.service';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectModel(Category) private categoryRepository: typeof Category,
+    private menuService: MenuService,
   ) {}
 
   async createCategory(dto: CreateCategoryDto) {
@@ -69,7 +71,8 @@ export class CategoriesService {
       throw new NotFoundException('Category not found');
     }
 
-    await category.destroy();
-    return category;
+    await this.menuService.deleteAllMenuItemsForCategoryId(id);
+    await category.destroy({ force: true });
+    return category.categoryName;
   }
 }

@@ -19,6 +19,6 @@ export class Category extends Model<Category, CategoryCreationAttrs> {
   @Column({ type: DataTypes.STRING, unique: true, allowNull: false })
   categoryName: string;
 
-  @HasMany(() => Menu)
+  @HasMany(() => Menu, { onDelete: 'CASCADE' })
   menuItems: Menu[];
 }

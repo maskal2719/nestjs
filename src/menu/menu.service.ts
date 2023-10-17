@@ -67,4 +67,18 @@ export class MenuService {
     const menuItem = await this.menuRepository.findOne({ where: { name } });
     return menuItem;
   }
+
+  async deleteAllMenuItemsForCategoryId(categoryId: number) {
+    const allItems = await this.menuRepository.findAll({
+      where: { categoryId: categoryId },
+    });
+
+    if (!allItems) {
+      throw new NotFoundException('Item not found');
+    }
+
+    for (const menuItem of allItems) {
+      await menuItem.destroy();
+    }
+  }
 }

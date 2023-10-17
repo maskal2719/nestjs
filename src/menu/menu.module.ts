@@ -16,5 +16,6 @@ import { AuthModule } from '../auth/auth.module';
     RolesModule,
     forwardRef(() => AuthModule),
   ],
+  exports: [MenuService],
 })
 export class MenuModule {}

@@ -8,4 +8,5 @@ export class CreateMenuItemDto {
   readonly weight: number;
   readonly description: string;
   readonly isEmpty?: boolean;
+  readonly categoryId: number;
 }
