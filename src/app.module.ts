@@ -12,6 +12,7 @@ import { MenuModule } from './menu/menu.module';
 import { Menu } from './menu/menu.model';
 import { CategoriesModule } from './categories/categories.module';
 import { Category } from './categories/categories.model';
+import { OrderModule } from './orders/order.module';
 
 @Module({
   controllers: [],
@@ -42,6 +43,7 @@ import { Category } from './categories/categories.model';
     AuthModule,
     MenuModule,
     CategoriesModule,
+    OrderModule,
   ],
 })
 export class AppModule {}
