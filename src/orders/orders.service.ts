@@ -13,33 +13,39 @@ export class OrdersService {
       items: dto.items,
       comment: dto.comment,
       status: dto.status,
+      name: Date.now().toString().slice(-6),
     });
+
+    let totalPrice = 0; // Инициализация общей стоимости
 
     for (const item of dto.items) {
       const menu = await Menu.findByPk(item.id);
       const price = menu.price;
+      const fullPrice = price * item.count;
       if (menu) {
         await OrderMenu.create({
           order_id: order.id,
           menu_id: item.id,
           count: item.count,
-          price: price * item.count,
+          price: fullPrice,
         });
+        totalPrice += fullPrice;
       }
     }
-
+    order.total_price = totalPrice;
+    await order.save();
     return order;
   }
 
-  // async getOrder(orderId: number) {
-  //   try {
-  //     const order = await this.orderRepository.findByPk(orderId, {
-  //       include: [{ model: Menu }],
-  //     });
-  //
-  //     return order;
-  //   } catch (err) {
-  //     throw new Error('Не удалось получить информацию о заказе');
-  //   }
-  // }
+  async getOrders() {
+    try {
+      const orders = await this.orderRepository.findAll({
+        include: [{ model: Menu }],
+      });
+
+      return orders;
+    } catch (err) {
+      throw new Error('Не удалось получить информацию о заказах');
+    }
+  }
 }

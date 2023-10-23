@@ -27,6 +27,16 @@ export class Order extends Model<Order> {
   })
   status: string;
 
+  @Column({
+    type: DataType.FLOAT,
+  })
+  total_price: number;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  name: string;
+
   @BelongsToMany(() => Menu, () => OrderMenu)
   items: Menu[];
 }
