@@ -38,9 +38,6 @@ export class MenuService {
 
   async getAllMenuItems() {
     const menuItems = await this.menuRepository.findAll({
-      where: {
-        isEmpty: false,
-      },
       include: [
         {
           model: Category,
