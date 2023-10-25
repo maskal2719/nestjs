@@ -20,7 +20,7 @@ export class AuthController {
     const user = req.user;
     return {
       valid: true,
-      role: user.roles[0],
+      role: user.roles[0].value,
     };
   }
 
