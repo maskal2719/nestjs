@@ -20,29 +20,21 @@ export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @Post()
-  @Roles('admin')
-  @UseGuards(RolesGuard)
   create(@Body() categoryDto: CreateCategoryDto) {
     return this.categoriesService.createCategory(categoryDto);
   }
 
   @Get()
-  @Roles('admin')
-  @UseGuards(RolesGuard)
   getAll() {
     return this.categoriesService.getAllCategory();
   }
 
   @Get(':id')
-  @Roles('admin')
-  @UseGuards(RolesGuard)
   getOne(@Param('id') id: number) {
     return this.categoriesService.getOneCategory(id);
   }
 
   @Put(':id')
-  @Roles('admin')
-  @UseGuards(RolesGuard)
   update(
     @Body() updateCategoryDto: CreateCategoryDto,
     @Param('id') id: number,
@@ -51,8 +43,6 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  @Roles('admin')
-  @UseGuards(RolesGuard)
   remove(@Param('id') id: number) {
     return this.categoriesService.deleteCategory(id);
   }
