@@ -19,7 +19,7 @@ export class AuthController {
   me(@Request() req: any) {
     const user = req.user;
     return {
-      valid: true,
+      isInitialized: true,
       role: user.roles[0].value,
     };
   }
