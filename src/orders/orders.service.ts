@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Order } from './order.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { Menu } from '../menu/menu.model';
@@ -47,5 +47,16 @@ export class OrdersService {
     } catch (err) {
       throw new Error('Не удалось получить информацию о заказах');
     }
+  }
+
+  async updateOrder(id: number, dto: any) {
+    const order = await this.orderRepository.findByPk(id);
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    await order.update(dto);
+    return order;
   }
 }
