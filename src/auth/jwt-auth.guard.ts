@@ -1,6 +1,8 @@
 import {
   CanActivate,
   ExecutionContext,
+  HttpException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -27,14 +29,10 @@ export class JwtAuthGuard implements CanActivate {
         });
       }
 
-      const user = this.jwtService.verify(token);
-      req.user = user;
+      req.user = this.jwtService.verify(token);
       return true;
     } catch (e) {
-      throw new UnauthorizedException({
-        message: 'Пользователь не авторизован',
-        isInitialized: false,
-      });
+      throw new HttpException({ isInitialized: false }, HttpStatus.OK);
     }
   }
 }

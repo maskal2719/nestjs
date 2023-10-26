@@ -5,6 +5,8 @@ import {
   Post,
   UseGuards,
   Request,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AuthService } from './auth.service';
@@ -16,6 +18,7 @@ export class AuthController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
   me(@Request() req: any) {
     const user = req.user;
     return {
