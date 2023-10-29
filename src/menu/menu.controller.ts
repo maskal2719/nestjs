@@ -20,7 +20,6 @@ export class MenuController {
   constructor(private menuService: MenuService) {}
 
   @Post()
-  @Roles('admin')
   @UseGuards(RolesGuard)
   create(@Body() menuItemDto: CreateMenuItemDto) {
     return this.menuService.createMenuItem(menuItemDto);
@@ -42,7 +41,6 @@ export class MenuController {
   }
 
   @Delete(':id')
-  @Roles('admin')
   @UseGuards(RolesGuard)
   remove(@Param('id') id: number) {
     return this.menuService.deleteMenuItem(id);

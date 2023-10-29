@@ -14,6 +14,7 @@ interface MenuModelAttrs {
   weight: number;
   description: string;
   isEmpty: boolean;
+  isDeleted: boolean;
 }
 
 @Table({ tableName: 'menu' })
@@ -38,6 +39,9 @@ export class Menu extends Model<Menu, MenuModelAttrs> {
 
   @Column({ type: DataTypes.BOOLEAN, allowNull: true })
   isEmpty?: boolean;
+
+  @Column({ type: DataTypes.BOOLEAN, allowNull: true })
+  isDeleted?: boolean;
 
   @ForeignKey(() => Category)
   @Column

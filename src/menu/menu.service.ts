@@ -21,6 +21,7 @@ export class MenuService {
     const menuItem = await this.menuRepository.create({
       ...dto,
       isEmpty: false,
+      isDeleted: false,
     });
     return menuItem;
   }
@@ -48,15 +49,15 @@ export class MenuService {
   }
 
   async deleteMenuItem(id: number) {
-    const menuItem = await this.menuRepository.findOne({
-      where: { id },
-    });
+    const menuItem = await this.menuRepository.findByPk(id);
 
     if (!menuItem) {
       throw new NotFoundException('Item not found');
     }
 
-    await menuItem.destroy();
+    menuItem.isDeleted = true;
+    await menuItem.save();
+
     return menuItem;
   }
 

@@ -20,7 +20,7 @@ export class OrdersService {
 
     for (const item of dto.items) {
       const menu = await Menu.findByPk(item.id);
-      const price = menu.price;
+      const price = menu?.price;
       const fullPrice = price * item.count;
       if (menu) {
         await OrderMenu.create({
@@ -40,10 +40,24 @@ export class OrdersService {
   async getOrders() {
     try {
       const orders = await this.orderRepository.findAll({
-        include: [{ model: Menu }],
+        include: [
+          {
+            model: Menu,
+            through: {
+              attributes: ['count'],
+            },
+          },
+        ],
       });
+      return orders.map((order) => {
+        const { items, ...orderData } = order.toJSON();
+        const processedItems = items.map(({ OrderMenu, ...item }: any) => ({
+          ...item,
+          count: OrderMenu?.count,
+        }));
 
-      return orders;
+        return { ...orderData, items: processedItems };
+      });
     } catch (err) {
       throw new Error('Не удалось получить информацию о заказах');
     }

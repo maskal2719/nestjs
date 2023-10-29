@@ -73,6 +73,6 @@ export class CategoriesService {
 
     await this.menuService.deleteAllMenuItemsForCategoryId(id);
     await category.destroy({ force: true });
-    return category.categoryName;
+    return category.id;
   }
 }
