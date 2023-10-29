@@ -44,6 +44,9 @@ export class MenuService {
           model: Category,
         },
       ],
+      where: {
+        isDeleted: false,
+      },
     });
     return menuItems;
   }
