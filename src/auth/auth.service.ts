@@ -47,15 +47,20 @@ export class AuthService {
 
   private async validateUser(userDto: CreateUserDto) {
     const user = await this.userService.getUserByLogin(userDto.login);
+
+    if (!user) {
+      throw new UnauthorizedException({ message: 'Неверный логин' });
+    }
+
     const passwordEquals = await bcrypt.compare(
       userDto.password,
       user.password,
     );
 
-    if (user && passwordEquals) {
+    if (passwordEquals) {
       return user;
     }
 
-    throw new UnauthorizedException({ message: 'Неверный email или пароль' });
+    throw new UnauthorizedException({ message: 'Неверный пароль' });
   }
 }
