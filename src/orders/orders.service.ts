@@ -48,6 +48,7 @@ export class OrdersService {
             },
           },
         ],
+        order: [['createdAt', 'DESC']],
       });
       return orders.map((order) => {
         const { items, ...orderData } = order.toJSON();
