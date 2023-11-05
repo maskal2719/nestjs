@@ -70,7 +70,10 @@ export class OrdersService {
       throw new NotFoundException('Order not found');
     }
 
-    await order.update(dto);
+    await order.update({
+      ...dto,
+      isEdit: true,
+    });
     return order;
   }
 }

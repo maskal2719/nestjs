@@ -37,6 +37,11 @@ export class Order extends Model<Order> {
   })
   name: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  isEdit: boolean;
+
   @BelongsToMany(() => Menu, () => OrderMenu)
   items: Menu[];
 }
