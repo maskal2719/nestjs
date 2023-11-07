@@ -65,16 +65,47 @@ export class OrdersService {
   }
 
   async updateOrder(id: number, dto: any) {
-    const order = await this.orderRepository.findByPk(id);
+    const order = await this.orderRepository.findByPk(id, {
+      include: [
+        {
+          model: Menu,
+          through: {
+            attributes: ['count'],
+          },
+        },
+      ],
+    });
 
     if (!order) {
       throw new NotFoundException('Order not found');
     }
 
+    await OrderMenu.destroy({ where: { order_id: order.id } });
+
+    let totalPrice = 0; // Инициализация общей стоимости
+
+    for (const item of dto.items) {
+      const menu = await Menu.findByPk(item.id);
+      const price = menu?.price;
+      const fullPrice = price * item.count;
+      if (menu) {
+        await OrderMenu.create({
+          order_id: order.id,
+          menu_id: item.id,
+          count: item.count,
+          price: fullPrice,
+        });
+        totalPrice += fullPrice;
+      }
+    }
+
+    order.total_price = totalPrice;
     await order.update({
       ...dto,
-      isEdit: true,
+      isEdit: false
     });
+
+    await order.save();
     return order;
   }
 }
