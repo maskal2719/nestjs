@@ -1,6 +1,6 @@
 import {
   Body,
-  Controller,
+  Controller, Delete,
   Get,
   Param,
   Post,
@@ -28,5 +28,10 @@ export class OrdersController {
   @Put(':id')
   update(@Body() updateOrderDto: any, @Param('id') id: number) {
     return this.orderService.updateOrder(id, updateOrderDto);
+  }
+
+  @Delete(':id')
+  async deleteOrder(@Param('id') id: number) {
+    return this.orderService.deleteOrder(id);
   }
 }

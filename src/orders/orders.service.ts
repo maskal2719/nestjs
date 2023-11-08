@@ -108,4 +108,16 @@ export class OrdersService {
     await order.save();
     return order;
   }
+
+  async deleteOrder(id: number) {
+    const order = await this.orderRepository.findByPk(id);
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    await OrderMenu.destroy({ where: { order_id: order.id } });
+    await order.destroy();
+
+    return order;
+  }
 }
