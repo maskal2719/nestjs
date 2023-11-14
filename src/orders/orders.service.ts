@@ -122,6 +122,8 @@ export class OrdersService {
         { fields: ['comment', 'status', 'isEdit'] } // Указываем только изменяемые поля
     );
 
+    await order.save()
+
     const updatedItems = await OrderMenu.findAll({ where: { order_id: order.id } });
     const processedItems = updatedItems.map((item: any) => ({
       id: item.menu_id,
