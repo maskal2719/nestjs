@@ -37,8 +37,20 @@ export class OrdersService {
     return order;
   }
 
-  async getOrders() {
+  async getOrders(sort: { date?: 'asc' | 'desc', price?: 'asc' | 'desc' }) {
     try {
+      const orderOptions: any = [['createdAt', 'DESC']]; // Массив опций сортировки по умолчанию
+
+      if (sort.date === 'asc') {
+        orderOptions[0][1] = 'ASC'; // Изменяем порядок сортировки для даты на возрастание
+      }
+
+      if (sort.price === 'asc') {
+        orderOptions.unshift(['total_price', 'ASC']); // Добавляем сортировку по цене в порядке возрастания на первое место
+      } else if (sort.price === 'desc') {
+        orderOptions.unshift(['total_price', 'DESC']); // Добавляем сортировку по цене в порядке убывания на первое место
+      }
+
       const orders = await this.orderRepository.findAll({
         include: [
           {
@@ -48,8 +60,9 @@ export class OrdersService {
             },
           },
         ],
-        order: [['createdAt', 'DESC']],
+        order: orderOptions, // Передаем опции сортировки
       });
+
       return orders.map((order) => {
         const { items, ...orderData } = order.toJSON();
         const processedItems = items.map(({ OrderMenu, ...item }: any) => ({
@@ -82,7 +95,7 @@ export class OrdersService {
 
     await OrderMenu.destroy({ where: { order_id: order.id } });
 
-    let totalPrice = 0; // Инициализация общей стоимости
+    let totalPrice = 0;
 
     for (const item of dto.items) {
       const menu = await Menu.findByPk(item.id);
@@ -100,13 +113,23 @@ export class OrdersService {
     }
 
     order.total_price = totalPrice;
-    await order.update({
-      ...dto,
-      isEdit: false
-    });
 
-    await order.save();
-    return order;
+    await order.update(
+        {
+          ...dto, // Обновляем данные заказа с использованием dto
+          isEdit: true,
+        },
+        { fields: ['comment', 'status', 'isEdit'] } // Указываем только изменяемые поля
+    );
+
+    const updatedItems = await OrderMenu.findAll({ where: { order_id: order.id } });
+    const processedItems = updatedItems.map((item: any) => ({
+      id: item.menu_id,
+      count: item.count,
+    }));
+
+
+    return { ...order.toJSON(), items: processedItems };
   }
 
   async deleteOrder(id: number) {

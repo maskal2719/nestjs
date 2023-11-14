@@ -1,14 +1,7 @@
-import {
-  Body,
-  Controller, Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+
 import { OrdersService } from './orders.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
@@ -21,8 +14,8 @@ export class OrdersController {
   }
 
   @Get()
-  getAll() {
-    return this.orderService.getOrders();
+  getAll(@Query() sort) {
+    return this.orderService.getOrders(sort);
   }
 
   @Put(':id')
